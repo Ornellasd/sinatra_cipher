@@ -3,7 +3,6 @@ require 'sinatra/reloader'
 
 def cipherize(operation, string, number)
   output = ""
-
   if operation == "encrypt" || operation == "e"
     string.split("").each do |letter|
       if letter.ord == 32
@@ -28,12 +27,16 @@ def cipherize(operation, string, number)
         output += (letter.ord - number).chr
       end
     end
-  else
-    print "Error!"
   end
-  print(output) 
+  output 
 end
 
 get '/' do
-  erb :index
+  erb :input
+end
+
+get '/output' do
+  text = params["cipher-text"]
+  shift = params["shift"]
+  erb :output, :locals => { :output => cipherize('e', text, shift.to_i) }
 end
